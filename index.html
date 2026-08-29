@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pro-Journal</title>
+    
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1e1e2d">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    
+    <!-- Fonts & CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <!-- Overlay untuk Mobile (Gelap saat menu terbuka) -->
+        <div class="sidebar-overlay d-md-none" id="sidebarOverlay"></div>
+
+        <!-- Sidebar (Kiri) -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header d-flex justify-content-between align-items-center">
+                <div>
+                    <i class="fas fa-layer-group text-primary fs-3 me-2"></i>
+                    <span class="fs-4 fw-bold text-white">ProJournal</span>
+                </div>
+                <!-- Tombol Close untuk Mobile -->
+                <button class="btn text-muted d-md-none border-0 p-0 fs-4" id="closeSidebarBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li class="menu-item active"><a href="#"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li class="menu-item"><a href="#notes-section"><i class="fas fa-sticky-note"></i> Catatan</a></li>
+                <li class="menu-item"><a href="#agenda-section"><i class="fas fa-calendar-alt"></i> Agenda</a></li>
+                <li class="menu-item mt-4">
+                    <span class="menu-label">PENGATURAN</span>
+                </li>
+                <li class="menu-item">
+                    <a href="#" id="btnNotif"><i class="fas fa-bell"></i> Izin Notifikasi</a>
+                </li>
+            </ul>
+            
+            <div class="sidebar-footer">
+                <div class="d-flex align-items-center">
+                    <img src="https://ui-avatars.com/api/?name=User&background=4361ee&color=fff" alt="User" class="rounded-circle me-2" width="40">
+                    <div>
+                        <h6 class="mb-0 text-white fs-6">Pengguna Lokal</h6>
+                        <small class="text-muted">App Terinstal</small>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content (Kanan) -->
+        <main class="main-content">
+            
+            <!-- Mobile Header (Hamburger Menu & Search Bar) -->
+            <header class="mobile-header d-md-none d-flex align-items-center mb-4 gap-3 w-100">
+                <button class="btn btn-light bg-white rounded-3 shadow-sm border-0 px-3 py-2" id="openSidebarBtn">
+                    <i class="fas fa-bars fs-5 text-dark"></i>
+                </button>
+                <div class="search-bar position-relative flex-grow-1">
+                    <i class="fas fa-search position-absolute top-50 translate-middle-y text-muted ms-3"></i>
+                    <input type="text" id="mobileSearchInput" class="form-control rounded-pill ps-5 bg-white border-0 shadow-sm" placeholder="Cari catatan...">
+                </div>
+            </header>
+
+            <!-- Desktop Top Navbar -->
+            <header class="top-navbar d-none d-md-flex justify-content-between align-items-center mb-4">
+                <div class="search-bar position-relative w-50">
+                    <i class="fas fa-search position-absolute top-50 translate-middle-y text-muted ms-3"></i>
+                    <input type="text" id="searchInput" class="form-control rounded-pill ps-5 bg-white border-0 shadow-sm" placeholder="Cari catatan...">
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="text-end">
+                        <h6 class="mb-0 fw-semibold text-dark" id="currentDate">Tanggal</h6>
+                        <small class="text-muted" id="currentTime">Waktu</small>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Stats -->
+            <div class="row mb-4">
+                <div class="col-6 col-md-4 mb-3">
+                    <div class="stat-card p-3 p-md-4 rounded-4 bg-white shadow-sm d-flex flex-column flex-md-row align-items-md-center justify-content-between border-start border-4 border-primary h-100">
+                        <div class="mb-2 mb-md-0">
+                            <p class="text-muted mb-1 fw-semibold small">Total Catatan</p>
+                            <h3 class="fw-bold mb-0 text-dark" id="statNotes">0</h3>
+                        </div>
+                        <div class="stat-icon bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center" style="width:40px; height:40px;">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4 mb-3">
+                    <div class="stat-card p-3 p-md-4 rounded-4 bg-white shadow-sm d-flex flex-column flex-md-row align-items-md-center justify-content-between border-start border-4 border-warning h-100">
+                        <div class="mb-2 mb-md-0">
+                            <p class="text-muted mb-1 fw-semibold small">Agenda Aktif</p>
+                            <h3 class="fw-bold mb-0 text-dark" id="statRoutines">0</h3>
+                        </div>
+                        <div class="stat-icon bg-warning bg-opacity-10 text-warning rounded-circle d-flex align-items-center justify-content-center" style="width:40px; height:40px;">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Notes Section -->
+                <div class="col-xl-8 mb-4" id="notes-section">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="fw-bold text-dark mb-0 fs-5"><i class="fas fa-book-open me-2 text-primary"></i>Jurnal & Catatan</h5>
+                        <button class="btn btn-primary rounded-pill px-3 shadow-sm btn-sm py-2" data-bs-toggle="modal" data-bs-target="#noteModal">
+                            <i class="fas fa-plus me-1"></i> Baru
+                        </button>
+                    </div>
+                    <div class="row g-3" id="notesContainer">
+                        <!-- Render Notes Here -->
+                    </div>
+                </div>
+
+                <!-- Agenda Section -->
+                <div class="col-xl-4 mb-4" id="agenda-section">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="fw-bold text-dark mb-0 fs-5"><i class="fas fa-tasks me-2 text-warning"></i>Agenda & Alarm</h5>
+                        <button class="btn btn-light rounded-pill border shadow-sm btn-sm px-3 py-2" data-bs-toggle="modal" data-bs-target="#routineModal">
+                            <i class="fas fa-plus text-primary"></i>
+                        </button>
+                    </div>
+                    <div class="bg-white rounded-4 shadow-sm p-3">
+                        <div id="routinesContainer" class="d-flex flex-column gap-2">
+                            <!-- Render Routines Here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Spasi tambahan di mobile agar tidak mentok bawah -->
+            <div class="pb-5 d-md-none"></div> 
+        </main>
+    </div>
+
+    <!-- Modal Catatan -->
+    <div class="modal fade" id="noteModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 rounded-4 shadow-lg">
+                <div class="modal-header border-bottom-0 pb-0">
+                    <h5 class="modal-title fw-bold fs-5">Buat Catatan Baru</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-md-8">
+                            <input type="text" id="noteTitle" class="form-control bg-light border-0 fw-semibold mb-3 mb-md-0" placeholder="Judul Catatan..." required>
+                        </div>
+                        <div class="col-md-4">
+                            <select id="noteCategory" class="form-select bg-light border-0 text-muted">
+                                <option value="Pribadi">Pribadi</option>
+                                <option value="Pekerjaan">Pekerjaan</option>
+                                <option value="Ide">Ide & Konsep</option>
+                                <option value="Belajar">Belajar</option>
+                            </select>
+                        </div>
+                    </div>
+                    <textarea id="noteContent" class="form-control bg-light border-0" rows="6" placeholder="Ketik sesuatu..." required></textarea>
+                </div>
+                <div class="modal-footer border-top-0 pt-0">
+                    <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary rounded-pill px-4" id="btnSaveNote" data-bs-dismiss="modal">Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Agenda -->
+    <div class="modal fade" id="routineModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 rounded-4 shadow-lg">
+                <div class="modal-header border-bottom-0 pb-0">
+                    <h5 class="modal-title fw-bold fs-5">Tambah Agenda Baru</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="routineForm">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold text-muted small">NAMA AGENDA</label>
+                            <input type="text" id="routineTitle" class="form-control bg-light border-0" placeholder="Misal: Meeting, Minum Obat..." required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold text-muted small">WAKTU & TANGGAL</label>
+                            <input type="datetime-local" id="routineTime" class="form-control bg-light border-0" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 fw-semibold" data-bs-dismiss="modal">Setel Alarm</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Toast -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1060;" id="toastContainer"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
