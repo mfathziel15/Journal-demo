@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0b0b0d">
+  <meta name="description" content="ProJournal — personal journal, notes and agenda workspace.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="manifest.json">
+  <title>ProJournal — Personal Workspace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="noise"></div>
+  <div class="cursor-dot"></div>
+  <div class="cursor-ring"></div>
+
+  <div class="loader" id="loader">
+    <div class="loader-mark"><span>PRO</span><i></i><span>JOURNAL</span></div>
+    <div class="loader-line"><span></span></div>
+    <small>YOUR THOUGHTS, IN MOTION</small>
+  </div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-symbol"><span></span><span></span><span></span></div>
+      <div><b>PRO</b><em>JOURNAL</em></div>
+    </div>
+    <button class="sidebar-close" id="closeSidebar" aria-label="Tutup menu">×</button>
+    <div class="side-kicker">WORKSPACE</div>
+    <nav>
+      <a class="nav-link active" href="#home"><span>01</span>Overview</a>
+      <a class="nav-link" href="#journal"><span>02</span>Journal</a>
+      <a class="nav-link" href="#agenda"><span>03</span>Agenda</a>
+    </nav>
+    <div class="side-bottom">
+      <button class="side-action magnetic" id="btnNotif"><span class="status-dot"></span>Enable notifications</button>
+      <div class="side-meta"><span>LOCAL MODE</span><span id="storageState">READY</span></div>
+    </div>
+  </aside>
+
+  <div class="overlay" id="overlay"></div>
+
+  <main>
+    <header class="topbar">
+      <button class="menu-btn" id="openSidebar" aria-label="Buka menu"><span></span><span></span></button>
+      <div class="top-label">PERSONAL OPERATING SYSTEM / <span>v2.0</span></div>
+      <div class="top-time"><span id="currentDate">—</span><b id="currentTime">—</b></div>
+    </header>
+
+    <section class="hero section" id="home">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow reveal">A QUIET PLACE FOR LOUD IDEAS <span>✳</span></div>
+          <h1 class="hero-title"><span class="line">Think.</span><span class="line italic">Write.</span><span class="line">Move.</span></h1>
+          <p class="hero-lead reveal">Satu ruang untuk menangkap pikiran, merapikan hari, dan menjaga hal-hal yang penting tetap bergerak.</p>
+          <a href="#journal" class="hero-cta magnetic reveal"><span>Open your journal</span><i>↘</i></a>
+        </div>
+        <div class="hero-orbit" aria-hidden="true">
+          <div class="orbit orbit-a"></div><div class="orbit orbit-b"></div>
+          <div class="orbit-core"><span>J</span></div>
+          <div class="orbit-word">IDEAS • NOTES • ROUTINES • IDEAS • NOTES • ROUTINES • </div>
+        </div>
+      </div>
+      <div class="hero-bottom reveal">
+        <span>SCROLL TO EXPLORE</span><span class="scroll-arrow">↓</span><span>01 / 04</span>
+      </div>
+    </section>
+
+    <section class="stats section">
+      <div class="section-head reveal"><span class="eyebrow">AT A GLANCE</span><span class="mono">LIVE / LOCAL</span></div>
+      <div class="stats-grid">
+        <article class="stat-card tilt reveal">
+          <span class="stat-index">01</span><small>ALL NOTES</small><strong id="statNotes">0</strong><p>Ideas you've chosen to keep.</p>
+        </article>
+        <article class="stat-card tilt reveal">
+          <span class="stat-index">02</span><small>UPCOMING</small><strong id="statRoutines">0</strong><p>Moments already on the horizon.</p>
+        </article>
+        <article class="stat-card stat-card-dark tilt reveal">
+          <span class="stat-index">03</span><small>FOCUS</small><strong>100<span>%</span></strong><p>Your data stays in this browser.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="journal section" id="journal">
+      <div class="section-head reveal"><span class="eyebrow">02 / JOURNAL</span><span class="mono">CAPTURE THE NOW</span></div>
+      <div class="journal-intro">
+        <h2 class="display reveal">A library of <i>thoughts.</i></h2>
+        <button class="primary-btn magnetic" data-modal="noteModal"><span>+ New note</span><i>↗</i></button>
+      </div>
+      <div class="toolbar reveal">
+        <label class="search-wrap"><span>⌕</span><input id="searchInput" type="search" placeholder="Search your notes..." autocomplete="off"></label>
+        <div class="filter-row" id="filters">
+          <button class="filter active" data-filter="all">All</button>
+          <button class="filter" data-filter="Pribadi">Pribadi</button>
+          <button class="filter" data-filter="Pekerjaan">Pekerjaan</button>
+          <button class="filter" data-filter="Ide">Ide</button>
+          <button class="filter" data-filter="Belajar">Belajar</button>
+        </div>
+      </div>
+      <div class="notes-grid" id="notesContainer"></div>
+    </section>
+
+    <section class="agenda section" id="agenda">
+      <div class="section-head reveal"><span class="eyebrow">03 / AGENDA</span><span class="mono">TIME IS MATERIAL</span></div>
+      <div class="agenda-layout">
+        <div>
+          <h2 class="display reveal">Give tomorrow<br><i>a shape.</i></h2>
+          <p class="agenda-copy reveal">Buat agenda, pasang alarm, lalu kembali fokus pada apa yang sedang kamu kerjakan.</p>
+          <button class="primary-btn magnetic reveal" data-modal="routineModal"><span>+ Add agenda</span><i>↗</i></button>
+        </div>
+        <div class="agenda-panel reveal">
+          <div class="panel-head"><span>NEXT MOMENTS</span><span id="agendaCount">0 ITEMS</span></div>
+          <div id="routinesContainer"></div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-big">MAKE SPACE<br><i>TO THINK.</i></div>
+      <div class="footer-bottom"><span>PROJOURNAL / ULTIMATE</span><span>BUILT FOR YOUR LOCAL FLOW</span><span>© 2026</span></div>
+    </footer>
+  </main>
+
+  <div class="modal" id="noteModal">
+    <div class="modal-card">
+      <button class="modal-close" data-close>×</button>
+      <span class="eyebrow">NEW ENTRY</span><h3>Write something<br><i>worth keeping.</i></h3>
+      <form id="noteForm">
+        <input id="noteTitle" placeholder="Title" required>
+        <select id="noteCategory"><option>Pribadi</option><option>Pekerjaan</option><option>Ide</option><option>Belajar</option></select>
+        <textarea id="noteContent" rows="7" placeholder="Start writing..." required></textarea>
+        <button class="primary-btn" type="submit"><span>Save note</span><i>↗</i></button>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="routineModal">
+    <div class="modal-card">
+      <button class="modal-close" data-close>×</button>
+      <span class="eyebrow">NEW MOMENT</span><h3>Give it<br><i>a time.</i></h3>
+      <form id="routineForm">
+        <input id="routineTitle" placeholder="Agenda title" required>
+        <input id="routineTime" type="datetime-local" required>
+        <button class="primary-btn" type="submit"><span>Set reminder</span><i>↗</i></button>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast-stack" id="toastContainer"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.8/dist/lenis.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
